@@ -1,27 +1,16 @@
-const searchToggle = document.querySelector('.search-toggle');
-const searchBar = document.querySelector('.search-bar');
-const menuToggle = document.querySelector('.menu-toggle');
-const mobileNav = document.querySelector('.mobile-nav');
-
-searchToggle.addEventListener('click', () => {
-  searchBar.classList.toggle('open');
-  if (searchBar.classList.contains('open')) searchBar.querySelector('input').focus();
-});
-menuToggle.addEventListener('click', () => {
-  const open = mobileNav.classList.toggle('open');
-  menuToggle.setAttribute('aria-expanded', open);
-});
-document.querySelectorAll('.mobile-nav a').forEach(link => link.addEventListener('click', () => {
-  mobileNav.classList.remove('open');
-  menuToggle.setAttribute('aria-expanded', 'false');
-}));
-
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(({ isIntersecting, target }) => {
-    if (isIntersecting) {
-      target.classList.add('visible');
-      revealObserver.unobserve(target);
-    }
-  });
-}, { threshold: 0.15 });
-document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+const menuToggle=document.querySelector('.menu-toggle'),mobileNav=document.querySelector('.mobile-nav');menuToggle.addEventListener('click',()=>{const e=mobileNav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',e)});document.querySelectorAll('.mobile-nav a').forEach(e=>e.addEventListener('click',()=>{mobileNav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false')}));const revealObserver=new IntersectionObserver(e=>e.forEach(({isIntersecting:e,target:t})=>{e&&(t.classList.add('visible'),revealObserver.unobserve(t))}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>revealObserver.observe(e));
+const details={piedra:{location:'PIEDRA PARADA · CHUBUT',title:'Escalada en Piedra Parada',description:'Piedra Parada se levanta en medio de la estepa chubutense y ofrece una experiencia de escalada única en la Patagonia. La propuesta permite realizar escalada de varios largos acompañada por un guía de alta montaña UIAGM. La vía, la duración y los requisitos se definen según la experiencia de los participantes, la fecha y las condiciones.',cta:'CONSULTAR POR ESTA EXPERIENCIA',message:'Hola, quiero recibir información sobre la escalada en Piedra Parada.'},tronador:{location:'CERRO TRONADOR · BARILOCHE',title:'Ascenso al Cerro Tronador',description:'El ascenso al Cerro Tronador es una experiencia de alta montaña que requiere preparación, equipamiento específico y planificación. La actividad se realiza con un guía de alta montaña UIAGM. El itinerario, el objetivo de cumbre, la duración y los requisitos se confirman según la experiencia de los participantes, las condiciones de la montaña y la disponibilidad del guía.',cta:'CONSULTAR POR EL ASCENSO',message:'Hola, quiero recibir información sobre el ascenso al Cerro Tronador.'},alerce:{location:'CERRO TRONADOR · BARILOCHE',title:'Cruce del glaciar Alerce',description:'El cruce del glaciar Alerce es una experiencia independiente del ascenso a la cumbre del Cerro Tronador. La travesía se desarrolla sobre terreno glaciar y se realiza con un guía de alta montaña UIAGM. El programa, la duración, el equipamiento y los requisitos se confirman de acuerdo con la fecha, la experiencia de los participantes y las condiciones de la montaña.',cta:'CONSULTAR POR EL CRUCE',message:'Hola, quiero recibir información sobre el cruce del glaciar Alerce.'},refugios:{location:'BARILOCHE · PATAGONIA',title:'Trekking a refugios',description:'Descubrí los refugios y paisajes de montaña de Bariloche a través de diferentes recorridos de trekking. Las opciones se organizan según la cantidad de días disponibles, la experiencia del grupo y las condiciones del sendero. Cada salida se coordina con un guía de montaña habilitado para el recorrido.',cta:'CONSULTAR RECORRIDOS',message:'Hola, quiero conocer las opciones de trekking a refugios.'}};
+const modal=document.querySelector('#experience-modal'),content=document.querySelector('#modal-content'),fields=['Ubicación','Duración','Nivel de dificultad','Experiencia previa requerida','Cantidad de participantes','Qué incluye','Qué no incluye','Equipamiento necesario','Punto de encuentro','Traslados disponibles','Temporada recomendada','Profesional responsable','Condiciones de reserva','Política de cancelación','Clima y condiciones'];document.querySelectorAll('.modal-open').forEach(e=>e.addEventListener('click',()=>{const t=details[e.dataset.experience];content.innerHTML=`<div class="modal-inner"><p class="location">${t.location}</p><h2>${t.title}</h2><p>${t.description}</p><div class="detail-note">Consultanos para conocer el programa, los requisitos y las condiciones vigentes.</div><div class="detail-grid">${fields.map(e=>`<div><b>${e}</b>Consultanos para conocer la información vigente.</div>`).join('')}</div><a class="button dark-button" target="_blank" rel="noreferrer" href="https://wa.me/5492944660556?text=${encodeURIComponent(t.message)}">${t.cta} <b>→</b></a></div>`;modal.showModal()}));document.querySelector('.modal-close').addEventListener('click',()=>modal.close());modal.addEventListener('click',e=>{e.target===modal&&modal.close()});
+const waIcon='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.7c-2 0-4-.5-5.7-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7Zm5.9-8c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.3-.6.1a8.7 8.7 0 0 1-2.5-1.5 9.2 9.2 0 0 1-1.7-2.1c-.2-.3 0-.4.1-.6l.5-.6c.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6l-1-2.4c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 3 .1 1.9 1.4 3.7a13.1 13.1 0 0 0 5.1 4.5c.7.3 1.3.5 1.8.7.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2.1-1.4.2-.7.2-1.2.2-1.4 0-.2-.2-.3-.5-.5Z"/></svg>';
+document.querySelector('.announcement').innerHTML='Experiencias a tu medida <span>·</span> Profesionales según cada actividad <span>·</span> Consultas por WhatsApp';
+document.querySelector('.header-whatsapp').insertAdjacentHTML('afterbegin',waIcon);
+document.querySelector('.hero .eyebrow').textContent='Patagonia · Experiencias a tu medida';
+document.querySelector('.hero h1').innerHTML='Elegí cómo<br>vivir la<br>Patagonia';
+document.querySelector('.hero-buttons .light').innerHTML='Explorar experiencias <b>→</b>';
+document.querySelector('.hero-buttons .outline').innerHTML='Consultar disponibilidad <b>→</b>';
+const copy=[['.intro .eyebrow','Experiencias pensadas para cada viajero'],['.intro h2','Tu estadía puede ser<br>el punto de partida'],['.experiences .eyebrow','Experiencias disponibles'],['.experiences h2','La montaña<br>te espera.'],['.how .eyebrow','Cómo funciona'],['.how h2','Planificá tu<br>experiencia'],['.about .eyebrow','Una red para vivir más tiempo afuera'],['.about h2','Experiencias que conectan personas y profesionales'],['.contact .eyebrow','Contacto'],['.contact h2','Planificá tu<br>experiencia']];copy.forEach(([selector,value])=>document.querySelector(selector).innerHTML=value);
+document.querySelector('.how .button').innerHTML='Consultar experiencias <b>→</b>';document.querySelector('.contact .button').innerHTML='Escribir por WhatsApp <b>→</b>';
+const footerCta=document.createElement('div');footerCta.className='footer-cta';footerCta.innerHTML='<p>¿Listo para salir?</p><a class="footer-wa" target="_blank" rel="noreferrer" href="https://wa.me/5492944660556?text=Hola%2C%20vi%20el%20cat%C3%A1logo%20de%20Proyectos%20Outdoor%20y%20quiero%20conocer%20las%20experiencias%20disponibles.">Escribinos por WhatsApp <b>→</b></a>';document.querySelector('footer').insertBefore(footerCta,document.querySelector('.legal'));
+const float=document.createElement('a');float.className='whatsapp-float';float.href='https://wa.me/5492944660556?text=Hola%2C%20vi%20el%20cat%C3%A1logo%20de%20Proyectos%20Outdoor%20y%20quiero%20conocer%20las%20experiencias%20disponibles.';float.target='_blank';float.rel='noreferrer';float.setAttribute('aria-label','Escribir por WhatsApp');float.innerHTML=waIcon;document.body.append(float);
+const howImage=document.createElement('img');howImage.className='how-bg';howImage.src='https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=2400&q=95';howImage.alt='Montaña nevada';document.querySelector('.how').prepend(howImage);
+document.querySelector('.how').insertAdjacentElement('afterend',document.querySelector('.intro'));
